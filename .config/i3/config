@@ -1,0 +1,250 @@
+# This config file will use environment variables such as $BROWSER and $TERMINAL.
+
+# Custom configs [anpnd]
+font pango: Ubuntu
+# font pango: System San Francisco Display 10
+# font pango: Fira Mono Bold 10
+
+# Startup
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+exec_always xrandr --output DVI-D-0 --off --output HDMI-0 --off --output DP-0 --off --output DP-1 --off --output DP-2 --mode 1920x1080 --pos 2560x180 --rotate normal --output DP-3 --off --output DP-4 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-5 --off
+# exec_always xrandr --output DVI-D-0 --off --output HDMI-0 --off --output DP-0 --off --output DP-1 --off --output DP-2 --mode 1920x1080 --pos 2560x0 --rotate normal --output DP-3 --off --output DP-4 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-5 --off
+# exec_always xrandr --output DVI-D-0 --off --output DP-2 --mode 1920x1080 --pos 2560x180 --rotate normal --output DP-0 --off --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --mode 2560x1440 --pos 0x0 --rotate normal --output DP-5 --off
+exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpaper-stash/3JWY37f.jpg
+exec_always --no-startup-id autotiling
+exec_always picom --config ~/.config/picom/picom.conf
+exec_always xset r rate 250 60
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# Basic Definitions #
+smart_borders on
+set $inner_gaps 16 
+set $outer_gaps 5
+set $term --no-startup-id alacritty
+set $mod Mod4
+hide_edge_borders both 
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start a terminal
+bindsym $mod+Return 		         exec $term
+bindsym $mod+Shift+Return	       exec $term --working-directory  $(xcwd)
+
+# drag windows
+floating_modifier $mod
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# start dmenu
+bindsym $mod+d exec rofi -show drun
+
+# lock
+bindsym $mod+Shift+x exec i3lock --color 2e3440 
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+b split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec i3-msg exit
+
+# cursor keys move focused
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# resize 
+bindsym $mod+Control+Left     resize shrink width 10 px or 10 ppt
+bindsym $mod+Control+Down     resize grow height 10 px or 10 ppt
+bindsym $mod+Control+Right     resize grow width 10 px or 10 ppt
+bindsym $mod+Control+Up     resize shrink height 10 px or 10 ppt
+
+# cursor keys change focused
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Gaps
+for_window [class="^.*"] border pixel 0
+gaps inner $inner_gaps
+gaps outer $outer_gaps
+
+# Monitors
+set $monitor1 DP-4
+set $monitor2 DP-2
+
+# Workspace names
+set $ws1 ""
+set $ws2 ""
+set $ws3 ""
+set $ws4 ""
+set $ws5 ""
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# Bind workspaces to monitors
+workspace $ws1 output $monitor1
+workspace $ws3 output $monitor2
+workspace $ws2 output $monitor1
+workspace $ws4 output $monitor2
+workspace $ws5 output $monitor2
+workspace $ws6 output $monitor2
+
+# Assign Workspaces:
+# assign [class="firefox"] $ws3
+assign [class="brave"] $ws3
+assign [class="discord"] $ws4
+assign [class="spotify"] $ws5
+assign [class="code-oss"] $ws2
+assign [class="jetbrains-toolbox"] $ws2
+assign [class="Alacritty"] $ws1
+
+# Startup programs
+exec discord
+exec brave
+exec alacritty 
+exec spotify
+# exec jetbrains-toolbox
+
+# Remove titlebar
+for_window [class="^.*"] border pixel 3
+
+# Assing autofloat
+#for_window [title=".*Emulator.*"] floating enable
+
+# # Media keys
+# bindsym XF86AudioPlay exec "spotifycli --playpause"
+# bindsym XF86AudioNext exec "spotifycli --next"
+# bindsym XF86AudioPrev exec "spotifycli --prev"
+
+# Spotify (i'm actually fucking retarded)
+#for_window [instance="spotify"] floating enable
+#for_window [instance="spotify"] workspace $ws5
+#for_window [instance="spotify"] resize set 1620 850 
+#for_window [instance="spotify"] move position center
+for_window [instance="spotify"] move workspace $ws5
+for_window [instance="nvim"] move workspace $ws2
+for_window [instance="jetbrains-toolbox"] move workspace $ws2
+for_window [instance="brave"] move workspace $ws3
+
+# switch to workspace
+bindsym $mod+1		workspace $ws1
+bindsym $mod+2		workspace $ws2
+bindsym $mod+3		workspace $ws3
+bindsym $mod+4		workspace $ws4
+bindsym $mod+5		workspace $ws5
+bindsym $mod+6		workspace $ws6
+bindsym $mod+7		workspace $ws7
+bindsym $mod+8		workspace $ws8
+bindsym $mod+9		workspace $ws9
+bindsym $mod+0		workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1	move container to workspace $ws1
+bindsym $mod+Shift+2	move container to workspace $ws2
+bindsym $mod+Shift+3	move container to workspace $ws3
+bindsym $mod+Shift+4	move container to workspace $ws4
+bindsym $mod+Shift+5	move container to workspace $ws5
+bindsym $mod+Shift+6	move container to workspace $ws6
+bindsym $mod+Shift+7	move container to workspace $ws7
+bindsym $mod+Shift+8	move container to workspace $ws8
+bindsym $mod+Shift+9	move container to workspace $ws9
+bindsym $mod+Shift+0	move container to workspace $ws10
+
+# Window colors
+
+set $bg-color 	         #1A1B26
+set $inactive-bg-color   #1A1B26
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #f3f4f5
+set $border-color        #81a1c1
+set $border-active       #d8dee9
+
+
+# window colors
+#                       border              background         text                 indicator
+client.focused          $border-active      $border-active     $text-color          $border-active
+client.unfocused        $border-color       $border-color      $inactive-text-color $border-color 
+client.focused_inactive $border-color       $border-color      $bg-color            $border-color 
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $bg-color
+
+# bar
+
+# bar {
+#   output DP-4
+#   position top
+#
+#   font pango: Ubuntu 14
+#
+#   status_command i3blocks -c ~/.config/i3/i3blocks.conf
+#   colors {
+#     background #1a1b26
+#     separator #1a1b26
+#     #                  border             background         text
+#     focused_workspace  $bg-color          $bg-color          $text-color
+#     inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+#     urgent_workspace   $urgent-bg-color   $bg-color          $text-color
+#   }
+# }
+
+# bar {
+#   output DP-2
+#   position top
+#  
+#   font pango: Ubuntu 11
+#
+#   colors {
+#     background #1a1b26
+#     separator #1a1b26
+#     #                  border             background         text
+#     focused_workspace  $bg-color          $bg-color          $text-color
+#     inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+#     urgent_workspace   $urgent-bg-color   $bg-color          $text-color
+#   }
+# }
+
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
